@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Plant Disease Detector</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="select_an_image">Select an image</string>
+    <string name="click_to_know_more"><u>Click to know More</u></string>
+    <string name="please_make_sure_that_the_plant_is_clearly_visible_and_camera_is_functioning_properly">Please make sure that the plant is clearly visible and camera is functioning properly.</string>
+    <string name="ai_confidence_s">AI Confidence: %1$d%</string>
+    <string name="my_message">text, %1$d! other tex.</string>
+    <string name="settings">Settings</string>
+    <string name="close">Close</string>
+    <string name="otp_verification">Otp Verification</string>
+    <string name="enter_the_otp_sent_to">Enter The otp sent to</string>
+    <string name="did_not_receive_the_otp">Did not receive the otp?</string>
+    <string name="resend_otp">Resend otp</string>
+    <string name="validate">Validate</string>
+    <string name="_91">+91</string>
+    <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="we_will_send_you_an_one_time_password_on_this_mobile_number">We will send you an One Time Password on this mobile number</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="get_otp">Get Otp</string>
+    <string name="name_of_disease">Name of Disease</string>
+</resources>

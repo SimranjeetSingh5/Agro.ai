@@ -15,8 +15,9 @@
 <androidx.cardview.widget.CardView
     android:id="@+id/toolbar"
     android:layout_width="match_parent"
-    android:layout_height="?actionBarSize"
+    android:layout_height="70dp"
     android:orientation="horizontal"
+    android:backgroundTint="@color/primary"
     app:cardCornerRadius="5dp"
     app:cardElevation="15dp"
     app:layout_constraintTop_toTopOf="parent"
@@ -24,24 +25,36 @@
     app:layout_constraintEnd_toEndOf="parent">
         <com.makeramen.roundedimageview.RoundedImageView
             app:riv_corner_radius="30dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_margin="12dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="8dp"
             android:padding="5dp"
             android:background="@drawable/rounded_corners"
             android:src="@drawable/leaf"
             android:scaleType="centerCrop"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="50dp"
-            android:fontFamily="@font/akaya_telivigala"
-            android:text="@string/app_name"
-            android:textColor="@color/primary"
-            android:textSize="25sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/calistoga"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="25sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/white"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"/>
+    <View
+        android:layout_width="3dp"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:layout_marginEnd="20dp"
+        android:layout_gravity="end"/>
 </androidx.cardview.widget.CardView>
 
         <ImageView
@@ -69,7 +82,7 @@
             android:backgroundTint="#2CA9A9A9"
             android:textAlignment="center"
             android:padding="10dp"
-            android:fontFamily="@font/belgrano"
+            android:fontFamily="@font/calistoga"
             app:layout_constraintStart_toStartOf="@id/imageView"
             app:layout_constraintEnd_toEndOf="@id/imageView"
             app:layout_constraintBottom_toBottomOf="@id/imageView"
@@ -82,33 +95,49 @@
         android:layout_marginStart="26dp"
         android:textSize="18sp"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/akaya_telivigala"
+        android:fontFamily="@font/calistoga"
         android:layout_marginBottom="10dp"
         android:text="@string/select_an_image"
         app:layout_constraintTop_toBottomOf="@id/imageView"
         app:layout_constraintStart_toStartOf="parent"/>
     <com.google.android.material.button.MaterialButton
         android:id="@+id/captureImageFab"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center|bottom"
-        android:layout_margin="26dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:icon="@drawable/ic_camera"
         app:iconTint="@color/white"
+        android:textSize="18sp"
+        android:layout_marginTop="20dp"
         android:text="@string/take_photo"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/calistoga"
         android:textColor="@color/white"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/tvDescription"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toStartOf="@id/uploadImageFab"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/uploadImageFab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:icon="@drawable/ic_upload"
+            app:iconTint="@color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="@string/upload_photo"
+            android:fontFamily="@font/calistoga"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            app:layout_constraintTop_toBottomOf="@id/tvDescription"
+            app:layout_constraintStart_toEndOf="@id/captureImageFab"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             android:padding="10dp"

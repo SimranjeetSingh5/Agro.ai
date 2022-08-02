@@ -34,7 +34,6 @@ class SendOtpActivity : AppCompatActivity() {
         binding = ActivitySendOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         mAuth = FirebaseAuth.getInstance()
 
         binding.getOtp.setOnClickListener {
@@ -44,7 +43,7 @@ class SendOtpActivity : AppCompatActivity() {
             }
             binding.progressBar.visibility = View.VISIBLE
             binding.getOtp.visibility = View.INVISIBLE
-            val phone = "+91"+binding.inputMobile.text.toString()
+            val phone = "+91"+ binding.inputMobile.text.toString()
             sendVerificationCode(phone)
         }
     }

@@ -22,6 +22,14 @@
           }
         },
         {
+          "client_id": "152034452049-gbjoblhugleof5kjvjqmd4abljp7eabi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.plantdiseasedetector",
+            "certificate_hash": "c6c6650c7b928631f4f012cb55282ee3cb02b14d"
+          }
+        },
+        {
           "client_id": "152034452049-65dp9dap67doervbrr56i9su970nk3no.apps.googleusercontent.com",
           "client_type": 3
         }

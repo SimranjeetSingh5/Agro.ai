@@ -19,4 +19,5 @@
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="get_otp">Get Otp</string>
     <string name="name_of_disease">Name of Disease</string>
+    <string name="phone_number">Phone number</string>
 </resources>

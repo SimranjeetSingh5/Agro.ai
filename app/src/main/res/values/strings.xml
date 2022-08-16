@@ -15,10 +15,12 @@
     <string name="validate">Validate</string>
     <string name="_91">+91</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
-    <string name="we_will_send_you_an_one_time_password_on_this_mobile_number">We will send you an One Time Password on this mobile number</string>
+    <string name="we_will_send_you_an_one_time_password_on_this_mobile_number">We will send you an <b>One Time Password</b> on this mobile number</string>
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="get_otp">Get Otp</string>
     <string name="name_of_disease">Name of Disease</string>
     <string name="phone_number">Phone number</string>
     <string name="upload_photo">Upload Photo</string>
+    <string name="login_or_signup"><b>Login</b> or <b>Signup</b></string>
+    <string name="verify_otp">Verify OTP</string>
 </resources>

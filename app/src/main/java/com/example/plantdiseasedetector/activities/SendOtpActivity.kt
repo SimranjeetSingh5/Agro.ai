@@ -37,13 +37,14 @@ class SendOtpActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
 
         binding.getOtp.setOnClickListener {
-            if (binding.inputMobile.text.toString().trim().isEmpty()){
+            if (binding.phoneEditText.editText?.text.toString().trim().isEmpty()){
                 Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             binding.progressBar.visibility = View.VISIBLE
             binding.getOtp.visibility = View.INVISIBLE
-            val phone = "+91"+ binding.inputMobile.text.toString()
+            val phone = "+91"+ binding.phoneEditText.editText!!.text.toString()
+            Toast.makeText(this, binding.phoneEditText.editText!!.text.toString(), Toast.LENGTH_SHORT).show()
             sendVerificationCode(phone)
         }
     }
@@ -89,7 +90,7 @@ class SendOtpActivity : AppCompatActivity() {
             binding.getOtp.visibility = View.VISIBLE
 
             val intent = Intent(applicationContext, VerifyOtpActivity::class.java)
-            intent.putExtra("mobile",binding.inputMobile.text.toString())
+            intent.putExtra("mobile",binding.phoneEditText.editText?.text.toString())
             intent.putExtra("verificationId",verificationId)
             intent.putExtra("resendToken",token)
             startActivity(intent)

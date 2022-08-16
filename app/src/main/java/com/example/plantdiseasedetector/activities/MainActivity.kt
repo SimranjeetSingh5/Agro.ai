@@ -35,7 +35,7 @@ import kotlin.math.max
 import kotlin.math.min
 
 
-class MainActivity : ComponentActivity(), View.OnClickListener {
+class MainActivity : ComponentActivity() {
 
     companion object {
         const val TAG = "TFLite - ODT"
@@ -56,7 +56,20 @@ class MainActivity : ComponentActivity(), View.OnClickListener {
         setUpRecyclerView()
         checkLoginStatus()
 
-        binding.captureImageFab.setOnClickListener(this)
+        binding.captureImageFab.setOnClickListener{
+            try {
+                dispatchTakePictureIntent()
+            } catch (e: ActivityNotFoundException) {
+                Log.e(TAG, e.message.toString())
+            }
+        }
+        binding.toolbarCamIcon.setOnClickListener{
+            try {
+                dispatchTakePictureIntent()
+            } catch (e: ActivityNotFoundException) {
+                Log.e(TAG, e.message.toString())
+            }
+        }
     }
 
     private fun setUpRecyclerView() {
@@ -89,17 +102,6 @@ class MainActivity : ComponentActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.captureImageFab -> {
-                try {
-                    dispatchTakePictureIntent()
-                } catch (e: ActivityNotFoundException) {
-                    Log.e(TAG, e.message.toString())
-                }
-            }
-        }
-    }
 
     private fun runObjectDetection(bitmap: Bitmap) {
         val image = InputImage.fromBitmap(bitmap, 0)
@@ -277,38 +279,36 @@ class MainActivity : ComponentActivity(), View.OnClickListener {
         val pen = Paint()
         pen.textAlign = Paint.Align.LEFT
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            detectionResults.forEach { result ->
-                // draw bounding box
-                result.forEach {
-                    pen.color = Color.RED
-                    pen.strokeWidth = 8F
-                    pen.style = Paint.Style.STROKE
-                    val box = it.boundingBox
-                    canvas.drawRect(box, pen)
+        detectionResults.forEach { result ->
+            // draw bounding box
+            result.forEach {
+                pen.color = Color.RED
+                pen.strokeWidth = 8F
+                pen.style = Paint.Style.STROKE
+                val box = it.boundingBox
+                canvas.drawRect(box, pen)
 
 
-                    val tagSize = Rect(0, 0, 0, 0)
+                val tagSize = Rect(0, 0, 0, 0)
 
-                    // calculate the right font size
-                    pen.style = Paint.Style.FILL_AND_STROKE
-                    pen.color = Color.YELLOW
-                    pen.strokeWidth = 2F
+                // calculate the right font size
+                pen.style = Paint.Style.FILL_AND_STROKE
+                pen.color = Color.YELLOW
+                pen.strokeWidth = 2F
 
-                    pen.textSize = MAX_FONT_SIZE
-                    pen.getTextBounds(it.text, 0, it.text.length, tagSize)
-                    val fontSize: Float = pen.textSize * box.width() / tagSize.width()
+                pen.textSize = MAX_FONT_SIZE
+                pen.getTextBounds(it.text, 0, it.text.length, tagSize)
+                val fontSize: Float = pen.textSize * box.width() / tagSize.width()
 
-                    // adjust the font size so texts are inside the bounding box
-                    if (fontSize < pen.textSize) pen.textSize = fontSize
+                // adjust the font size so texts are inside the bounding box
+                if (fontSize < pen.textSize) pen.textSize = fontSize
 
-                    var margin = (box.width() - tagSize.width()) / 2.0F
-                    if (margin < 0F) margin = 0F
-                    canvas.drawText(
-                        it.text, box.left + margin,
-                        box.top + tagSize.height().times(1F), pen
-                    )
-                }
+                var margin = (box.width() - tagSize.width()) / 2.0F
+                if (margin < 0F) margin = 0F
+                canvas.drawText(
+                    it.text, box.left + margin,
+                    box.top + tagSize.height().times(1F), pen
+                )
             }
         }
         return outputBitmap

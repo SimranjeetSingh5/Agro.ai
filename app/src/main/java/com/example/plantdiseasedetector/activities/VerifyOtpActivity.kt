@@ -35,7 +35,7 @@ class VerifyOtpActivity : AppCompatActivity() {
         currUserPhoneNumber = intent.getStringExtra("mobile")
         mAuth = FirebaseAuth.getInstance()
 
-        binding.resendText2.setOnClickListener {
+        binding.resendText.setOnClickListener {
 
             resendVerificationCode(currUserPhoneNumber!!,resendToken!!)
         }

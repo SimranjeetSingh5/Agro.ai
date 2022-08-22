@@ -10,6 +10,16 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_back"
+            app:backgroundTint="@color/white"
+            android:layout_margin="15dp"
+            android:backgroundTint="@color/white"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:contentDescription="@string/back" />
     <ImageView
         android:id="@+id/verifyIcon"
         android:layout_width="130dp"
@@ -75,7 +85,7 @@
             app:otp_text_size="24dp"/>
         </FrameLayout>
         <TextView
-            android:id="@+id/resendText"
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="100dp"
@@ -88,21 +98,21 @@
             app:layout_constraintStart_toStartOf="parent"
             />
         <TextView
-            android:id="@+id/resendText2"
+            android:id="@+id/resendText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/resend_otp"
             android:textColor="@color/primary"
             android:textStyle="bold"
-            android:textAllCaps="true"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="50dp"
-            app:layout_constraintStart_toEndOf="@id/resendText"
+            app:layout_constraintStart_toEndOf="@id/textView3"
             app:layout_constraintTop_toBottomOf="@id/otpFrameLayout"/>
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/resendText2"
+            app:layout_constraintTop_toBottomOf="@id/resendText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
         <com.google.android.material.button.MaterialButton

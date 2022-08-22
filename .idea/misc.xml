@@ -4,9 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.17889492753623187" />
+        <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/font/akaya_telivigala.xml" value="0.2515625" />
         <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/font/calistoga.xml" value="0.12083333333333333" />
+        <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/font/monoton.xml" value="0.2515625" />
         <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/layout/activity_main.xml" value="0.24495677233429394" />
         <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/layout/activity_send_otp.xml" value="0.375" />
+        <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/layout/activity_verify_otp.xml" value="0.25" />
         <entry key="..\:/Users/Simranjeet Singh/Plant-Disease-Detector/app/src/main/res/layout/item_disease.xml" value="0.335" />
         <entry key="app/src/main/res/drawable/background_gradient.xml" value="0.1975" />
         <entry key="app/src/main/res/drawable/cam.xml" value="0.1" />

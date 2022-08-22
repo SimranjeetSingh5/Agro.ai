@@ -1,25 +1,28 @@
 package com.example.plantdiseasedetector.activities
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
+import android.media.ExifInterface
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
-import com.example.plantdiseasedetector.R
 import com.example.plantdiseasedetector.databinding.ActivityMainBinding
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
@@ -29,16 +32,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.IOException
+import java.lang.Integer.max
+import java.lang.Math.min
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.max
-import kotlin.math.min
+import kotlin.collections.ArrayList
 
 
 class MainActivity : ComponentActivity() {
 
     companion object {
-        const val TAG = "TFLite - ODT"
+        const val TAG = "PDD Test"
         const val REQUEST_IMAGE_CAPTURE: Int = 1
         private const val MAX_FONT_SIZE = 96F
     }
@@ -58,48 +62,161 @@ class MainActivity : ComponentActivity() {
 
         binding.captureImageFab.setOnClickListener{
             try {
-                dispatchTakePictureIntent()
+                getImageFromCamera()
             } catch (e: ActivityNotFoundException) {
                 Log.e(TAG, e.message.toString())
             }
         }
         binding.toolbarCamIcon.setOnClickListener{
             try {
-                dispatchTakePictureIntent()
+                getImageFromCamera()
             } catch (e: ActivityNotFoundException) {
+                Log.e(TAG, e.message.toString())
+            }
+        }
+        binding.uploadImageFab.setOnClickListener {
+            try {
+                getImageFromGallery()
+            }catch (e:ActivityNotFoundException){
                 Log.e(TAG, e.message.toString())
             }
         }
     }
 
-    private fun setUpRecyclerView() {
-        diseaseAdapter = DiseaseAdapter(this@MainActivity)
-        val snapHelper: SnapHelper = LinearSnapHelper()
-        snapHelper.attachToRecyclerView(binding.recyclerView)
-        binding.recyclerView.apply {
-            val llm = LinearLayoutManager(context)
-            llm.orientation = LinearLayoutManager.VERTICAL
-            layoutManager = llm
-            adapter = diseaseAdapter
+    private fun getImageFromGallery() {
+        ImagePicker.with(this)
+            .galleryOnly()
+            .createIntent { intent ->
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (e: IOException) {
+                    Log.e(TAG, e.message.toString())
+                    null
+                }
+                photoFile?.also {
+                    val photoUri: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.plantdiseasedetector.fileprovider",
+                        it
+                    )
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    startForProfileImageResult.launch(intent)
+                }
+            }
+    }
+
+
+    private fun getImageFromCamera() {
+        ImagePicker.with(this)
+            .cameraOnly()
+            .createIntent { intent ->
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (e: IOException) {
+                    Log.e(TAG, e.message.toString())
+                    null
+                }
+                photoFile?.also {
+                    val photoUri: Uri = FileProvider.getUriForFile(
+                        this,
+                        "com.example.plantdiseasedetector.fileprovider",
+                        it
+                    )
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+                    startForProfileImageResult.launch(intent)
+                }
+            }
+    }
+    private val startForProfileImageResult =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+            val resultCode = result.resultCode
+            val data = result.data
+
+            when (resultCode) {
+                Activity.RESULT_OK -> {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data!!
+
+                    binding.imageView.setImageURI(fileUri)
+                    val image = getCapturedImage()
+
+                    lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(image) }
+//                    setViewAndDetect(getCapturedImage())
+                }
+                ImagePicker.RESULT_ERROR -> {
+                    Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+                }
+                else -> {
+                    Toast.makeText(this, "Task Cancelled", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
         }
     }
 
-    private fun checkLoginStatus() {
+    private fun getCapturedImage(): Bitmap {
+        // Get the dimensions of the View
+        val targetW: Int = binding.imageView.width
+        val targetH: Int = binding.imageView.height
 
-        mAuth = FirebaseAuth.getInstance()
-        if (mAuth.currentUser==null){
-            startActivity(Intent(this, SendOtpActivity::class.java))
+        val bmOptions = BitmapFactory.Options().apply {
+            // Get the dimensions of the bitmap
+            inJustDecodeBounds = true
+
+            BitmapFactory.decodeFile(currentPhotoPath, this)
+
+            val photoW = 300
+            val photoH = 300
+
+            // Determine how much to scale down the image
+            val scaleFactor: Int = max(1, (photoW / targetW).coerceAtMost(photoH / targetH))
+
+            // Decode the image file into a Bitmap sized to fill the View
+            inJustDecodeBounds = false
+            inSampleSize = scaleFactor
+            inMutable = true
         }
+        val exifInterface = ExifInterface(currentPhotoPath)
+        val orientation = exifInterface.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
 
+        val bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions)
+        return when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> {
+                rotateImage(bitmap, 90f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_180 -> {
+                rotateImage(bitmap, 180f)
+            }
+            ExifInterface.ORIENTATION_ROTATE_270 -> {
+                rotateImage(bitmap, 270f)
+            }
+            else -> {
+                bitmap
+            }
+        }
     }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE &&
-            resultCode == Activity.RESULT_OK
-        ) {
-            setViewAndDetect(getCapturedImage())
-        }
+    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(
+            source, 0, 0, source.width, source.height,
+            matrix, true
+        )
     }
 
 
@@ -162,114 +279,6 @@ class MainActivity : ComponentActivity() {
 
             }
     }
-    private fun setViewAndDetect(bitmap: Bitmap) {
-        // Display capture image
-        binding.imageView.setImageBitmap(bitmap)
-//        binding.tvPlaceholder.visibility = View.INVISIBLE
-
-        lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(bitmap) }
-    }
-
-    private fun getCapturedImage(): Bitmap {
-        // Get the dimensions of the View
-        val targetW: Int = binding.imageView.width
-        val targetH: Int = binding.imageView.height
-
-        val bmOptions = BitmapFactory.Options().apply {
-            // Get the dimensions of the bitmap
-            inJustDecodeBounds = true
-
-            BitmapFactory.decodeFile(currentPhotoPath, this)
-
-            val photoW = 300
-            val photoH = 300
-
-            // Determine how much to scale down the image
-            val scaleFactor: Int = max(1, min(photoW / targetW, photoH / targetH))
-
-            // Decode the image file into a Bitmap sized to fill the View
-            inJustDecodeBounds = false
-            inSampleSize = scaleFactor
-            inMutable = true
-        }
-        val exifInterface = ExifInterface(currentPhotoPath)
-        val orientation = exifInterface.getAttributeInt(
-            ExifInterface.TAG_ORIENTATION,
-            ExifInterface.ORIENTATION_UNDEFINED
-        )
-
-        val bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions)
-        return when (orientation) {
-            ExifInterface.ORIENTATION_ROTATE_90 -> {
-                rotateImage(bitmap, 90f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_180 -> {
-                rotateImage(bitmap, 180f)
-            }
-            ExifInterface.ORIENTATION_ROTATE_270 -> {
-                rotateImage(bitmap, 270f)
-            }
-            else -> {
-                bitmap
-            }
-        }
-    }
-
-//    private fun getSampleImage(drawable: Int): Bitmap {
-//        return BitmapFactory.decodeResource(resources, drawable, BitmapFactory.Options().apply {
-//            inMutable = true
-//        })
-//    }
-    private fun rotateImage(source: Bitmap, angle: Float): Bitmap {
-        val matrix = Matrix()
-        matrix.postRotate(angle)
-        return Bitmap.createBitmap(
-            source, 0, 0, source.width, source.height,
-            matrix, true
-        )
-    }
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
-
-    private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (e: IOException) {
-                    Log.e(TAG, e.message.toString())
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        "com.example.plantdiseasedetector.fileprovider",
-                        it
-                    )
-
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
-    }
-
     private fun drawDetectionResult(
         bitmap: Bitmap,
         detectionResults: List<List<DetectionResult>>
@@ -313,6 +322,44 @@ class MainActivity : ComponentActivity() {
         }
         return outputBitmap
     }
-}
 
-data class DetectionResult(val boundingBox: Rect, val text: String)
+
+    private fun setUpRecyclerView() {
+        diseaseAdapter = DiseaseAdapter(this@MainActivity)
+        val snapHelper: SnapHelper = LinearSnapHelper()
+        snapHelper.attachToRecyclerView(binding.recyclerView)
+        binding.recyclerView.apply {
+            val llm = LinearLayoutManager(context)
+            llm.orientation = LinearLayoutManager.VERTICAL
+            layoutManager = llm
+            adapter = diseaseAdapter
+        }
+    }
+
+    private fun checkLoginStatus() {
+
+        mAuth = FirebaseAuth.getInstance()
+        if (mAuth.currentUser==null){
+            startActivity(Intent(this, SendOtpActivity::class.java))
+        }
+
+    }
+
+    override fun onBackPressed() {
+        val dialogClickListener =
+            DialogInterface.OnClickListener { dialog, which ->
+                when (which) {
+                    DialogInterface.BUTTON_POSITIVE -> {
+                        finishAffinity()
+                    }
+                    DialogInterface.BUTTON_NEGATIVE -> {
+                        dialog.cancel()
+                    }
+                }
+            }
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+            .setNegativeButton("No", dialogClickListener).show()
+    }
+    data class DetectionResult(val boundingBox: Rect, val text: String)
+}

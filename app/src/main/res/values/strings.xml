@@ -9,9 +9,9 @@
     <string name="settings">Settings</string>
     <string name="close">Close</string>
     <string name="otp_verification">Otp Verification</string>
-    <string name="enter_the_otp_sent_to">Enter The otp sent to</string>
+    <string name="enter_the_otp_sent_to">Enter the OTP sent to</string>
     <string name="did_not_receive_the_otp">Did not receive the otp?</string>
-    <string name="resend_otp">Resend otp</string>
+    <string name="resend_otp"><u>RESEND OTP</u></string>
     <string name="validate">Validate</string>
     <string name="_91">+91</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
@@ -23,4 +23,6 @@
     <string name="upload_photo">Upload Photo</string>
     <string name="login_or_signup"><b>Login</b> or <b>Signup</b></string>
     <string name="verify_otp">Verify OTP</string>
+    <string name="back">back</string>
+    <string name="pdd">PDD</string>
 </resources>

@@ -21,16 +21,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/monoton"
-                android:text="PDD"
-                android:textColor="@color/primary"
                 android:layout_gravity="center_vertical"
+                android:fontFamily="@font/monoton"
                 android:gravity="center"
+                android:text="@string/pdd"
+                android:textColor="@color/primary"
                 android:textSize="25sp" />
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/toolbarCamIcon"
                 android:background="@drawable/rounded_corners"
                 android:layout_width="40dp"
@@ -126,11 +126,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
-            android:padding="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/captureImageFab"
             app:layout_constraintVertical_bias="0.0"
-            tools:layout_editor_absoluteX="42dp"
             tools:listitem="@layout/item_disease" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

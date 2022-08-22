@@ -38,7 +38,7 @@ class DiseaseAdapter(context: Context):RecyclerView.Adapter<RecyclerView.ViewHol
         val diseaseHolder = holder as ViewHolder
         diseaseHolder.binding.diseaseName.text = disease.name
         diseaseHolder.binding.diseasePercent.setTextColor(Color.RED)
-        diseaseHolder.binding.diseasePercent.text = String.format(ctx.resources.getString(R.string.ai_confidence_s),disease.confidence.toString())
+        diseaseHolder.binding.diseasePercent.text = "${ctx.resources.getString(R.string.ai_confidence_s)} ${disease.confidence.toString()}"
         val bar = diseaseHolder.binding.animatedProgressBar
         bar.setMax(100)
         bar.setProgress(disease.confidence)

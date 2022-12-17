@@ -1,4 +1,4 @@
-package com.example.plantdiseasedetector
+package com.ai.Agro
 
 import org.junit.Test
 

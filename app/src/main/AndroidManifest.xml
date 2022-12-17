@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.plantdiseasedetector">
+    package="com.ai.Agro">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_SMS"/>
@@ -13,12 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PlantDiseaseDetector">
         <activity
-            android:name=".activities.VerifyOtpActivity"
+            android:name="com.ai.Agro.activities.VerifyOtpActivity"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".activities.SendOtpActivity"
+            android:name="com.ai.Agro.activities.SendOtpActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize">
@@ -29,14 +29,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.ai.Agro.activities.MainActivity"
             android:exported="true"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.example.plantdiseasedetector.fileprovider"
+            android:authorities="com.ai.Agro.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

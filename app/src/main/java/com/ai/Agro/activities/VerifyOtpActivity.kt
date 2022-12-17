@@ -1,4 +1,4 @@
-package com.example.plantdiseasedetector.activities
+package com.ai.Agro.activities
 
 import `in`.aabhasjindal.otptextview.OTPListener
 import android.Manifest
@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.plantdiseasedetector.databinding.ActivityVerifyOtpBinding
+import com.ai.Agro.databinding.ActivityVerifyOtpBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*

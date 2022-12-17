@@ -7,28 +7,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:152034452049:android:19f9531990c877110a4e70",
+        "mobilesdk_app_id": "1:152034452049:android:901eda7a25a434ec0a4e70",
         "android_client_info": {
-          "package_name": "com.example.plantdiseasedetector"
+          "package_name": "com.ai.Agro"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "152034452049-8bpi80ofrjcai144k39t9pelrjp5q5af.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.plantdiseasedetector",
-            "certificate_hash": "9fa696b961943a8b6265325045a4e22a9986e241"
-          }
-        },
-        {
-          "client_id": "152034452049-gbjoblhugleof5kjvjqmd4abljp7eabi.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.plantdiseasedetector",
-            "certificate_hash": "c6c6650c7b928631f4f012cb55282ee3cb02b14d"
-          }
-        },
         {
           "client_id": "152034452049-65dp9dap67doervbrr56i9su970nk3no.apps.googleusercontent.com",
           "client_type": 3

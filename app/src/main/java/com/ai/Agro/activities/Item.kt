@@ -1,4 +1,4 @@
-package com.example.plantdiseasedetector.activities
+package com.ai.Agro.activities
 
 data class Item(
     val id:Int,

@@ -1,4 +1,4 @@
-package com.example.plantdiseasedetector.activities
+package com.ai.Agro.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,8 +6,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.plantdiseasedetector.activities.MainActivity.Companion.TAG
-import com.example.plantdiseasedetector.databinding.ActivitySendOtpBinding
+import com.ai.Agro.activities.MainActivity.Companion.TAG
+import com.ai.Agro.databinding.ActivitySendOtpBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*

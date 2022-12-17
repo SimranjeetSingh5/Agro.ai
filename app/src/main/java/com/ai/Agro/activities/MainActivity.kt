@@ -1,16 +1,15 @@
-package com.example.plantdiseasedetector.activities
+package com.ai.Agro.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.*
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
@@ -18,8 +17,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
-import com.example.plantdiseasedetector.R
-import com.example.plantdiseasedetector.databinding.ActivityMainBinding
+import com.ai.Agro.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
@@ -93,6 +91,7 @@ class MainActivity : ComponentActivity() {
 
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE &&
@@ -229,6 +228,7 @@ class MainActivity : ComponentActivity() {
         )
     }
 
+    @SuppressLint("SimpleDateFormat")
     @Throws(IOException::class)
     private fun createImageFile(): File {
         // Create an image file name

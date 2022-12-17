@@ -1,4 +1,4 @@
-package com.example.plantdiseasedetector.activities
+package com.ai.Agro.activities
 
 import android.content.Context
 import android.graphics.Color
@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.plantdiseasedetector.R
-import com.example.plantdiseasedetector.databinding.ItemDiseaseBinding
+import com.ai.Agro.R
+import com.ai.Agro.databinding.ItemDiseaseBinding
 import com.mckrpk.animatedprogressbar.AnimatedProgressBar
 import com.mckrpk.animatedprogressbar.dpToPx
 

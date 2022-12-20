@@ -10,6 +10,5 @@ gathering and improved us
 
 Below are few SnapShots of the app:-
 
-<img src="https://user-images.githubusercontent.com/57033670/124243985-1a423780-db3c-11eb-8a6a-938189fa83ba.png"  width="250"/><img src="https://user-images.githubusercontent.com/57033670/124243996-1ca49180-db3c-11eb-9b4d-75febd517d79.png"  width="250"/>
-<img src="https://user-images.githubusercontent.com/57033670/124244001-1dd5be80-db3c-11eb-8597-0bc3f8c79232.png"  width="250"/><img src="https://user-images.githubusercontent.com/57033670/124244006-1f06eb80-db3c-11eb-88b2-8d36c6465b27.png" width="250"/>
-<img src="https://user-images.githubusercontent.com/57033670/124244008-1f9f8200-db3c-11eb-8c6c-1a932832c604.pn"  width="250"/><img src="https://user-images.githubusercontent.com/57033670/124244014-20381880-db3c-11eb-869f-95a250527b14.png" width="250"/>
+<img src="https://user-images.githubusercontent.com/57033670/208644578-93100261-a2e5-49be-be2f-14dbd6a5c372.png"  width="250"/><img src="https://user-images.githubusercontent.com/57033670/208644614-deec4b81-ddc1-4636-b90d-a6d72f0ef449.png"  width="250"/>
+<img src="https://user-images.githubusercontent.com/57033670/208644734-8e6ec913-ad94-4ab1-9977-34eaca4fda15.png"  width="250"/><img src="https://user-images.githubusercontent.com/57033670/208644775-ff1001d2-cf2d-47fc-9450-dc3c9bbf47cd.png" width="250"/>

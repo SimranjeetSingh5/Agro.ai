@@ -3,7 +3,7 @@
 <img src="https://user-images.githubusercontent.com/57033670/208644614-deec4b81-ddc1-4636-b90d-a6d72f0ef449.png"  width="800" height="400"/>
 - Utilised pre-trained fine-grained image classification model for
 crop disease classification, covering diseases for crops such as
-Maize (Corn), Soy, Cabbage and Tomatoes.<\br>
+Maize (Corn), Soy, Cabbage and Tomatoes.<br/>
 - Successfully implemented object detection and tracking using
 ML-kit’s on mobile Object detection and tracking API
 - Material design’s machine learning pattern for guided input

@@ -10,7 +10,9 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
@@ -40,11 +42,12 @@ class MainActivity : ComponentActivity() {
         const val REQUEST_IMAGE_CAPTURE: Int = 1
         private const val MAX_FONT_SIZE = 96F
     }
-    private lateinit var mAuth:FirebaseAuth
-    private lateinit var binding:ActivityMainBinding
-    private lateinit var diseaseAdapter:DiseaseAdapter
-    
-    
+
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var diseaseAdapter: DiseaseAdapter
+
+
     private lateinit var currentPhotoPath: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +57,14 @@ class MainActivity : ComponentActivity() {
         setUpRecyclerView()
         checkLoginStatus()
 
-        binding.captureImageFab.setOnClickListener{
+        binding.captureImageFab.setOnClickListener {
             try {
                 dispatchTakePictureIntent()
             } catch (e: ActivityNotFoundException) {
                 Log.e(TAG, e.message.toString())
             }
         }
-        binding.toolbarCamIcon.setOnClickListener{
+        binding.toolbarCamIcon.setOnClickListener {
             try {
                 dispatchTakePictureIntent()
             } catch (e: ActivityNotFoundException) {
@@ -85,21 +88,26 @@ class MainActivity : ComponentActivity() {
     private fun checkLoginStatus() {
 
         mAuth = FirebaseAuth.getInstance()
-        if (mAuth.currentUser==null){
+        if (mAuth.currentUser == null) {
             startActivity(Intent(this, SendOtpActivity::class.java))
         }
 
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE &&
-            resultCode == Activity.RESULT_OK
-        ) {
-            setViewAndDetect(getCapturedImage())
+    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        super.onActivityResult(requestCode, resultCode, data)
+//        if (requestCode == REQUEST_IMAGE_CAPTURE &&
+//            resultCode == Activity.RESULT_OK
+//        ) {
+//            setViewAndDetect(getCapturedImage())
+//        }
+//    }
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
+            if (success) {
+                setViewAndDetect(getCapturedImage())
+            }
         }
-    }
 
 
     private fun runObjectDetection(bitmap: Bitmap) {
@@ -144,7 +152,15 @@ class MainActivity : ComponentActivity() {
                     result.labels.map {
                         val text = "${it.text}, ${it.confidence.times(100).toInt()}%"
 
-                        diseaseList.add(Item(count++,"Nothing",it.confidence.times(100).toInt(),it.text,"Something"))
+                        diseaseList.add(
+                            Item(
+                                count++,
+                                "Nothing",
+                                it.confidence.times(100).toInt(),
+                                it.text,
+                                "Something"
+                            )
+                        )
                         // Create a data object to display the detection result
                         DetectionResult(boundingBox, text)
                     }
@@ -152,6 +168,7 @@ class MainActivity : ComponentActivity() {
 
 
                 diseaseAdapter.differ.submitList(diseaseList)
+                binding.infoText.visibility = View.GONE
                 val imgWithResult = drawDetectionResult(bitmap, resultToDisplay)
 
                 this.runOnUiThread {
@@ -161,6 +178,7 @@ class MainActivity : ComponentActivity() {
 
             }
     }
+
     private fun setViewAndDetect(bitmap: Bitmap) {
         // Display capture image
         binding.imageView.setImageBitmap(bitmap)
@@ -214,7 +232,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-//    private fun getSampleImage(drawable: Int): Bitmap {
+    //    private fun getSampleImage(drawable: Int): Bitmap {
 //        return BitmapFactory.decodeResource(resources, drawable, BitmapFactory.Options().apply {
 //            inMutable = true
 //        })
@@ -245,29 +263,48 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun dispatchTakePictureIntent() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (e: IOException) {
-                    Log.e(TAG, e.message.toString())
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        this,
-                        "com.example.plantdiseasedetector.fileprovider",
-                        it
-                    )
-
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
+        takePicture.also { takePictureIntent ->
+            // Create the File where the photo should go
+            val photoFile: File? = try {
+                createImageFile()
+            } catch (e: IOException) {
+                Log.e(TAG, e.message.toString())
+                null
+            }
+            // Continue only if the File was successfully created
+            photoFile?.also {
+                val photoURI: Uri = FileProvider.getUriForFile(
+                    this,
+                    "com.ai.Agro.fileprovider",
+                    it
+                )
+                takePictureIntent.launch(photoURI)
             }
         }
+//        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+//            // Ensure that there's a camera activity to handle the intent
+//            takePictureIntent.resolveActivity(packageManager)?.also {
+//                // Create the File where the photo should go
+//                val photoFile: File? = try {
+//                    createImageFile()
+//                } catch (e: IOException) {
+//                    Log.e(TAG, e.message.toString())
+//                    null
+//                }
+//                // Continue only if the File was successfully created
+//                photoFile?.also {
+//                    val photoURI: Uri = FileProvider.getUriForFile(
+//                        this,
+//                        "com.example.plantdiseasedetector.fileprovider",
+//                        it
+//                    )
+//
+//                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+//
+//                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+//                }
+//            }
+//        }
     }
 
     private fun drawDetectionResult(

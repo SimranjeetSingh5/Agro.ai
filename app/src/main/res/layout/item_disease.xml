@@ -30,7 +30,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/leaf"
+            android:src="@drawable/agro_ai"
             android:layout_marginStart="20dp"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"

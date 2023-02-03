@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,15 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:fontFamily="@font/monoton"
-                android:gravity="center"
-                android:text="@string/pdd"
+                <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                    android:layout_marginStart="20dp"
+
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/agro_ai"
                 android:textColor="@color/primary"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                    android:contentDescription="@string/app_name" />
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/toolbarCamIcon"
                 android:background="@drawable/rounded_corners"
@@ -91,13 +93,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_camera"
-        app:iconTint="@color/white"
+        app:iconTint="@color/dark_blue"
         android:textSize="12sp"
         android:layout_marginTop="20dp"
         android:text="@string/take_photo"
-        android:backgroundTint="@color/primary"
+        android:backgroundTint="@color/optional"
         android:layout_marginStart="20dp"
-        android:textColor="@color/white"
+        android:textColor="@color/dark_blue"
         android:textAllCaps="false"
         app:layout_constraintTop_toBottomOf="@id/tvDescription"
         app:layout_constraintStart_toStartOf="parent"
@@ -107,14 +109,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:icon="@drawable/ic_upload"
-            app:iconTint="@color/white"
+            app:iconTint="@color/dark_blue"
             android:textSize="12sp"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:text="@string/upload_photo"
-            android:backgroundTint="@color/primary"
-            android:textColor="@color/white"
+            android:backgroundTint="@color/optional"
+            android:textColor="@color/dark_blue"
             android:textAllCaps="false"
             app:layout_constraintTop_toBottomOf="@id/tvDescription"
             app:layout_constraintStart_toEndOf="@id/captureImageFab"

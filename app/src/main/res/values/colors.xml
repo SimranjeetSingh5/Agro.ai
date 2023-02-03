@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#06E20E</color>
+
+    <color name="primary">#2D7A30</color>
     <color name="primarySecond">#8BC34A</color>
     <color name="secondary">#009688</color>
+    <color name="optional">#A5F682</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+    <color name="dark_blue">#091A52</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>

@@ -38,7 +38,7 @@ class SendOtpActivity : AppCompatActivity() {
 
         binding.getOtp.setOnClickListener {
             if (binding.phoneEditText.editText?.text.toString().trim().isEmpty()){
-                Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "Enter Mobile Number", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
             binding.progressBar.visibility = View.VISIBLE

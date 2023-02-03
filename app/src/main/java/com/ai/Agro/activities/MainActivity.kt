@@ -1,16 +1,21 @@
 package com.ai.Agro.activities
 
+import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Dialog
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.*
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -19,7 +24,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import androidx.recyclerview.widget.SnapHelper
+import com.ai.Agro.Utils.Utils
 import com.ai.Agro.databinding.ActivityMainBinding
+import com.ai.Agro.databinding.WelcomeDialogBinding
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.auth.FirebaseAuth
 import com.google.mlkit.common.model.LocalModel
 import com.google.mlkit.vision.common.InputImage
@@ -38,11 +46,13 @@ import kotlin.math.min
 class MainActivity : ComponentActivity() {
 
     companion object {
-        const val TAG = "TFLite - ODT"
+        const val TAG = "Issues"
         const val REQUEST_IMAGE_CAPTURE: Int = 1
         private const val MAX_FONT_SIZE = 96F
     }
 
+    private var utils: Utils = Utils()
+    private lateinit var dialog: Dialog
     private lateinit var mAuth: FirebaseAuth
     private lateinit var binding: ActivityMainBinding
     private lateinit var diseaseAdapter: DiseaseAdapter
@@ -56,20 +66,42 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
         setUpRecyclerView()
         checkLoginStatus()
+//        checkFirstLogin()
+        welcomeDialog()
 
-        binding.captureImageFab.setOnClickListener {
-            try {
-                dispatchTakePictureIntent()
-            } catch (e: ActivityNotFoundException) {
-                Log.e(TAG, e.message.toString())
-            }
+        binding.uploadImageFab.setOnClickListener {
+            ImagePicker.with(this)
+                .start()
         }
         binding.toolbarCamIcon.setOnClickListener {
-            try {
-                dispatchTakePictureIntent()
-            } catch (e: ActivityNotFoundException) {
-                Log.e(TAG, e.message.toString())
+            ImagePicker.with(this)
+                .start()
+        }
+    }
+
+    private fun checkFirstLogin() {
+        val firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true)
+        if (firstrun) {
+            welcomeDialog()
+            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .edit()
+                .putBoolean("firstrun", false)
+                .commit()
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (resultCode) {
+            Activity.RESULT_OK -> {
+                val uri: Uri = data?.data!!
+                val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, uri)
+                setViewAndDetect(bitmap)
             }
+            ImagePicker.RESULT_ERROR -> {
+                Toast.makeText(this, ImagePicker.getError(data), Toast.LENGTH_SHORT).show()
+            }
+            else -> {}
         }
     }
 
@@ -84,6 +116,21 @@ class MainActivity : ComponentActivity() {
             adapter = diseaseAdapter
         }
     }
+    private fun welcomeDialog(){
+        dialog = Dialog(this)
+        val dialogMainBinding : WelcomeDialogBinding = WelcomeDialogBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogMainBinding.root)
+        dialog.window!!.setBackgroundDrawable(
+            ColorDrawable(
+                Color.TRANSPARENT
+            )
+        )
+        dialog.show()
+        dialogMainBinding.animationView.playAnimation()
+        dialogMainBinding.thanksButton.setOnClickListener(View.OnClickListener { // get count from text view
+            dialog.dismiss()
+        })
+    }
 
     private fun checkLoginStatus() {
 
@@ -93,15 +140,6 @@ class MainActivity : ComponentActivity() {
         }
 
     }
-
-    //    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode == REQUEST_IMAGE_CAPTURE &&
-//            resultCode == Activity.RESULT_OK
-//        ) {
-//            setViewAndDetect(getCapturedImage())
-//        }
-//    }
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
             if (success) {
@@ -131,18 +169,21 @@ class MainActivity : ComponentActivity() {
             ObjectDetection.getClient(options)
 
         objectDetector.process(image)
-            .addOnFailureListener { }
+            .addOnFailureListener {
+                validation()
+            }
             .addOnSuccessListener { res ->
+                if (res.isEmpty() || res.size==0){
+                    validation()
+                }
                 for (detectedObject in res) {
                     val boundingBox = detectedObject.boundingBox
                     for (label in detectedObject.labels) {
                         val text = label.text
-
                         DetectionResult(boundingBox, text)
                     }
 
                 }
-//                    Log.e("Results",results[0].labels[0].text)
 
                 val diseaseList = ArrayList<Item>()
                 var count = 0
@@ -177,6 +218,23 @@ class MainActivity : ComponentActivity() {
 
 
             }
+    }
+
+    private fun validation() {
+        utils.showDialog(this,
+            Title = "No result Found",
+            Message = "1.Try capturing in a more light up area\n" +
+                    "2.Make sure to capture image with a blank background.\n" +
+                    "3.High possibility of healthy crop",
+            PositiveButton = "Retake",
+            NegativeButton = "Cancel",
+            listner = (DialogInterface.OnClickListener { dialogInterface, i ->
+                try {
+                    dispatchTakePictureIntent()
+                } catch (e: ActivityNotFoundException) {
+                    Log.e(TAG, e.message.toString())
+                }
+            }))
     }
 
     private fun setViewAndDetect(bitmap: Bitmap) {
@@ -260,6 +318,17 @@ class MainActivity : ComponentActivity() {
             // Save a file: path for use with ACTION_VIEW intents
             currentPhotoPath = absolutePath
         }
+    }
+
+    override fun onBackPressed() {
+        utils.showDialog(this,
+            Title = "Quitting app.Are you sure?",
+            Message = null,
+            PositiveButton = "Yes",
+            NegativeButton = "Cancel",
+            listner = (DialogInterface.OnClickListener { dialogInterface, i ->
+                finishAffinity()
+            }))
     }
 
     private fun dispatchTakePictureIntent() {

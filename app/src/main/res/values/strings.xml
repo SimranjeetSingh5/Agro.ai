@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Agro.ai</string>
     <string name="take_photo">Take Photo</string>
-    <string name="select_an_image">Select an image</string>
+    <string name="select_an_image"><b>Upload or capture image to let our trained ML model detect results for you:-</b></string>
     <string name="click_to_know_more"><u>Click to know More</u></string>
     <string name="please_make_sure_that_the_plant_is_clearly_visible_and_camera_is_functioning_properly">Please make sure that the plant is clearly visible and camera is functioning properly.</string>
     <string name="ai_confidence_s">AI Confidence:</string>
@@ -15,12 +15,14 @@
     <string name="validate">Validate</string>
     <string name="_91">+91</string>
     <string name="enter_mobile_number">Enter Mobile Number</string>
+    <string name="thank_you">Thank you</string>
     <string name="we_will_send_you_an_one_time_password_on_this_mobile_number">We will send you an <b>One Time Password</b> on this mobile number</string>
     <string name="enter_phone_number">Enter Phone Number</string>
     <string name="get_otp">Get Otp</string>
     <string name="name_of_disease">Name of Disease</string>
     <string name="phone_number">Phone number</string>
-    <string name="upload_photo">Upload Photo</string>
+    <string name="upload_photo">Capture/Upload</string>
+    <string name="intro">Hello World. Welcome to <u>Agro.ai</u>,we help solving problem in the field of Agriculture with the help of next gen tech i.e. <b>Artificial intelligence</b> and <b>Machine learning</b>. Detect diseases in your crop, plant, vegetable with just a click.</string>
     <string name="login_or_signup"><b>Login</b> or <b>Signup</b></string>
     <string name="verify_otp">Verify OTP</string>
     <string name="agro_ai">Agro.ai</string>

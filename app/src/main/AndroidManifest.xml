@@ -14,13 +14,13 @@
         android:theme="@style/Theme.PlantDiseaseDetector">
         <activity
             android:name="com.ai.Agro.activities.VerifyOtpActivity"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name="com.ai.Agro.activities.SendOtpActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +31,7 @@
         <activity
             android:name="com.ai.Agro.activities.MainActivity"
             android:exported="true"
-            android:screenOrientation="fullSensor"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize"/>
 
         <provider

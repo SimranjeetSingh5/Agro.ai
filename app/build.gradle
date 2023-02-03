@@ -67,6 +67,7 @@ dependencies {
     implementation "com.makeramen:roundedimageview:2.3.0"
 
     implementation 'com.github.mckrpk:AnimatedProgressBar:0.1.0'
+    implementation 'com.airbnb.android:lottie:5.2.0'
 
 
 }

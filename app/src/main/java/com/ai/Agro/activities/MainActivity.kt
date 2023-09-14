@@ -1,6 +1,5 @@
 package com.ai.Agro.activities
 
-import android.animation.Animator
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog

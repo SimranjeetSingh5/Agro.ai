@@ -3,7 +3,6 @@
     package="com.ai.Agro">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
 
     <application
         android:allowBackup="true"
@@ -14,13 +13,13 @@
         android:theme="@style/Theme.PlantDiseaseDetector">
         <activity
             android:name="com.ai.Agro.activities.VerifyOtpActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name="com.ai.Agro.activities.SendOtpActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,7 +30,7 @@
         <activity
             android:name="com.ai.Agro.activities.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustResize"/>
 
         <provider

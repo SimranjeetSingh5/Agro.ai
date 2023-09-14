@@ -1,20 +1,20 @@
 package com.ai.Agro.activities
 
-import `in`.aabhasjindal.otptextview.OTPListener
-import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.ai.Agro.databinding.ActivityVerifyOtpBinding
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
-import com.google.firebase.auth.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.PhoneAuthCredential
+import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
+import `in`.aabhasjindal.otptextview.OTPListener
 import java.util.concurrent.TimeUnit
 
 
@@ -29,7 +29,6 @@ class VerifyOtpActivity : AppCompatActivity() {
         binding = ActivityVerifyOtpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestSmsPermission()
         verificationId = intent.getStringExtra("verificationId")
         resendToken = intent.getParcelableExtra("resendToken")
         currUserPhoneNumber = intent.getStringExtra("mobile")
@@ -70,15 +69,6 @@ class VerifyOtpActivity : AppCompatActivity() {
                 binding.verifyButton.isEnabled = true
             }
         })
-    }
-    private fun requestSmsPermission() {
-        val permission: String = Manifest.permission.RECEIVE_SMS
-        val grant = ContextCompat.checkSelfPermission(this, permission)
-        if (grant != PackageManager.PERMISSION_GRANTED) {
-            val permissionList = arrayOfNulls<String>(1)
-            permissionList[0] = permission
-            ActivityCompat.requestPermissions(this, permissionList, 1)
-        }
     }
     private fun resendVerificationCode(
         phone: String,

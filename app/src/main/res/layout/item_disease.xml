@@ -57,15 +57,17 @@
             app:layout_constraintTop_toBottomOf="@id/diseaseName"/>
         <com.mckrpk.animatedprogressbar.AnimatedProgressBar
             android:id="@+id/animatedProgressBar"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:animationDurationInMs="1600"
             app:animationStyle="wave"
+            android:paddingHorizontal="10dp"
             app:lineWidth="6dp"
             app:progressColor="@color/primary"
             app:progressTipColor="@color/red"
             app:progressTipEnabled="true"
             app:trackColor="@color/grey"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/diseasePercent"
             app:layout_constraintStart_toStartOf="@id/diseaseName"/>
         <TextView

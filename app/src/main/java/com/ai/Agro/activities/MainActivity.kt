@@ -65,8 +65,7 @@ class MainActivity : ComponentActivity() {
         setContentView(binding.root)
         setUpRecyclerView()
         checkLoginStatus()
-//        checkFirstLogin()
-        welcomeDialog()
+        checkFirstLogin()
 
         binding.uploadImageFab.setOnClickListener {
             ImagePicker.with(this)
@@ -126,9 +125,9 @@ class MainActivity : ComponentActivity() {
         )
         dialog.show()
         dialogMainBinding.animationView.playAnimation()
-        dialogMainBinding.thanksButton.setOnClickListener(View.OnClickListener { // get count from text view
+        dialogMainBinding.thanksButton.setOnClickListener { // get count from text view
             dialog.dismiss()
-        })
+        }
     }
 
     private fun checkLoginStatus() {
